@@ -1,16 +1,34 @@
-import React from 'react';
-import {SafeAreaView,View,Text,FlatList,StyleSheet,
-} from 'react-native';
+import { SafeAreaView, View, Text, FlatList, StyleSheet, Platform } from 'react-native';
+import React, { useState, useEffect } from 'react';
 
 export default function ConsultaUsuariosScreen() {
 
-  const usuarios = [
-    { id: '1', nombre: 'Isay Guerra', edad: 22 },
-    { id: '2', nombre: 'Ana López', edad: 19 },
-    { id: '3', nombre: 'Carlos Gonzalez', edad: 25 },
-    { id: '4', nombre: 'Bjork Guerra', edad: 21 },
-    { id: '5', nombre: 'Luisa Martínez', edad: 28 },
-  ];
+  const [usuarios, setUsuarios] = useState([]);
+
+  const obtenerApi = () => {
+    if (Platform.OS === 'web') {
+      return 'http://localhost:5000';
+    } else {
+      return 'http://192.168.100.18:5000';
+    }
+  };
+
+  const obtenerUsuarios = async () => {
+    try {
+      const respuesta = await fetch(`${obtenerApi()}/v1/usuarios/`);
+      const datos = await respuesta.json();
+      console.log('Respuesta API', datos);
+
+      setUsuarios(datos.usuarios);
+
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    obtenerUsuarios();
+  }, []);
 
   const renderTarjeta = ({ item }) => (
     <View style={styles.card}>
@@ -27,7 +45,6 @@ export default function ConsultaUsuariosScreen() {
   );
 
   return (
-
     <SafeAreaView style={styles.container}>
 
       <Text style={styles.titulo}>
@@ -36,7 +53,7 @@ export default function ConsultaUsuariosScreen() {
 
       <FlatList
         data={usuarios}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={renderTarjeta}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}
@@ -44,7 +61,7 @@ export default function ConsultaUsuariosScreen() {
 
     </SafeAreaView>
   );
-  
+
 }
 
 const styles = StyleSheet.create({
