@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status, HTTPException, Depends
 from app.models.usuario import UsuarioBase
-from app.security.auth import verificar_peticion
+# from app.security.auth import verificar_peticion
 
 from sqlalchemy.orm import Session
 from app.data.db import get_db
@@ -44,7 +44,7 @@ async def actualizar_usuario(
     id: int,
     usuario_actualizado: UsuarioBase,
     db: Session = Depends(get_db),
-    username: str = Depends(verificar_peticion)
+    # username: str = Depends(verificar_peticion)
 ):
     usuario = db.query(Usuario).filter(Usuario.id == id).first()
 
@@ -58,7 +58,8 @@ async def actualizar_usuario(
     db.refresh(usuario)
 
     return {
-        "message": f"Usuario actualizado completamente por {username}",
+        # "message": f"Usuario actualizado completamente por {username}",
+        "message": "Usuario actualizado completamente",
         "data": usuario
     }
 
@@ -69,7 +70,7 @@ async def actualizar_parcial(
     id: int,
     datos: dict,
     db: Session = Depends(get_db),
-    username: str = Depends(verificar_peticion)
+    # username: str = Depends(verificar_peticion)
 ):
     usuario = db.query(Usuario).filter(Usuario.id == id).first()
 
@@ -84,7 +85,8 @@ async def actualizar_parcial(
     db.refresh(usuario)
 
     return {
-        "message": f"Usuario actualizado parcialmente por {username}",
+        # "message": f"Usuario actualizado parcialmente por {username}",
+        "message": "Usuario actualizado parcialmente",
         "data": usuario
     }
 
@@ -93,7 +95,7 @@ async def actualizar_parcial(
 async def eliminar_usuario(
     id: int,
     db: Session = Depends(get_db),
-    username: str = Depends(verificar_peticion)
+    # username: str = Depends(verificar_peticion)
 ):
     usuario = db.query(Usuario).filter(Usuario.id == id).first()
 
@@ -104,5 +106,6 @@ async def eliminar_usuario(
     db.commit()
 
     return {
-        "message": f"Usuario eliminado correctamente por {username}"
+        # "message": f"Usuario eliminado correctamente por {username}"
+        "message": "Usuario eliminado correctamente"
     }

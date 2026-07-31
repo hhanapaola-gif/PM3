@@ -18,7 +18,7 @@ export default function App() {
     if (Platform.OS === 'web') {
       return 'http://localhost:5000';
     } else {
-      return 'http://192.168.100.18:5000';
+      return 'http://172.20.10.6:5000';
     }
   };
 
@@ -58,7 +58,7 @@ export default function App() {
       <View style={styles.card}>
 
         <Text style={styles.titulo}>
-          Registro de Usuarios
+          Registro de usuarios
         </Text>
 
         <TextInput

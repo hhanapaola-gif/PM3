@@ -1,5 +1,6 @@
-import { SafeAreaView, View, Text, FlatList, StyleSheet, Platform } from 'react-native';
+import { SafeAreaView, View, Text, FlatList, StyleSheet, Platform, Pressable } from 'react-native';
 import React, { useState, useEffect } from 'react';
+import { router } from 'expo-router';
 
 export default function ConsultaUsuariosScreen() {
 
@@ -9,7 +10,7 @@ export default function ConsultaUsuariosScreen() {
     if (Platform.OS === 'web') {
       return 'http://localhost:5000';
     } else {
-      return 'http://192.168.100.18:5000';
+      return 'http://172.20.10.6:5000';
     }
   };
 
@@ -30,25 +31,34 @@ export default function ConsultaUsuariosScreen() {
     obtenerUsuarios();
   }, []);
 
-  const renderTarjeta = ({ item }) => (
-    <View style={styles.card}>
+const renderTarjeta = ({ item }) => (
+  <View style={styles.card}>
 
-      <Text style={styles.nombre}>{item.nombre}</Text>
+    <Text style={styles.nombre}>{item.nombre}</Text>
 
-      <View style={styles.linea}></View>
+    <View style={styles.linea}></View>
 
-      <Text style={styles.info}>
-        Edad: {item.edad} años
+    <Text style={styles.info}>
+      Edad: {item.edad} años
+    </Text>
+
+    <Pressable
+      style={styles.botonDetalles}
+      onPress={() => router.push({pathname: "/detalleUsuario",params: {id: item.id, nombre: item.nombre, edad: item.edad, },})}>
+
+      <Text style={styles.textoDetalles}>
+        Ver detalles...
       </Text>
+    </Pressable>
 
-    </View>
-  );
+  </View>
+);
 
   return (
     <SafeAreaView style={styles.container}>
 
       <Text style={styles.titulo}>
-        Lista de Usuarios
+        Lista de usuarios
       </Text>
 
       <FlatList
@@ -99,7 +109,7 @@ const styles = StyleSheet.create({
   nombre: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#2563EB',
+    color: "#2014cc",
   },
 
   linea: {
@@ -111,6 +121,17 @@ const styles = StyleSheet.create({
   info: {
     fontSize: 16,
     color: '#4B5563',
+  },
+
+  botonDetalles: {
+  alignSelf: "flex-end",
+  marginTop: 15,
+  },
+
+  textoDetalles: {
+    color: "#2014cc",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 
 });
